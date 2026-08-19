@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compound Interest Calculator — See Your Money Grow | CalcNest</title>
+  <meta name="description" content="Free compound interest calculator with monthly contributions. See your investment grow, compare compound vs simple interest, and find out the real cost of waiting.">
+  <link rel="canonical" href="https://calcnest.com/tools/compound-interest-calculator.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563eb'/><text x='16' y='22' font-size='18' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>C</text></svg>">
+  <link rel="stylesheet" href="../css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Compound Interest Calculator",
+    "url": "https://calcnest.com/tools/compound-interest-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Calculate the future value of an investment with compound interest and monthly contributions.",
+    "featureList": ["Future value", "Compound vs simple comparison", "Cost of waiting", "Growth chart"]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html" aria-label="CalcNest home">
+        <span class="logo-mark">C</span><span>CalcNest</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="rent-affordability-calculator.html">Rent</a></li>
+          <li><a href="retirement-savings-calculator.html">Retirement</a></li>
+          <li><a href="credit-card-payoff-calculator.html">Debt</a></li>
+          <li><a href="compound-interest-calculator.html" aria-current="page">Interest</a></li>
+          <li><a href="../about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> / Compound Interest Calculator</p>
+    <h1 class="page-title">Compound Interest Calculator</h1>
+    <p class="page-lead">See how a lump sum and monthly contributions grow over time — and exactly how much waiting one year costs you.</p>
+
+    <div class="calc-layout">
+      <section>
+        <div class="calc-card" id="calc-card">
+          <form id="ci-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ci-principal">Initial amount</label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="ci-principal" inputmode="decimal" min="0" step="100" value="10000" placeholder="10000">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="ci-contribution">Monthly contribution</label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="ci-contribution" inputmode="decimal" min="0" step="50" value="300" placeholder="300">
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="ci-rate">Annual interest rate</label>
+                <div class="input-wrap suffixed">
+                  <input type="number" id="ci-rate" inputmode="decimal" min="0" max="25" step="0.5" value="7" placeholder="7">
+                  <span class="suffix">%</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="ci-years">Number of years</label>
+                <div class="input-wrap suffixed">
+                  <input type="number" id="ci-years" inputmode="numeric" min="1" max="50" step="1" value="20" placeholder="20">
+                  <span class="suffix">yrs</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="ci-compound">Compounding frequency</label>
+              <select id="ci-compound" class="input-wrap" style="width:100%; padding:12px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); font-size:16px;">
+                <option value="12">Monthly</option>
+                <option value="4">Quarterly</option>
+                <option value="1">Annually</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-block">Calculate compound growth</button>
+          </form>
+
+          <div class="result-card" id="result-card">
+            <h3 style="font-size:16px; font-weight:700;">Your investment projection</h3>
+            <div class="result-big" id="result-fv">—</div>
+            <ul class="result-list">
+              <li><span class="k">Total contributions</span><span class="v" id="r-contrib">—</span></li>
+              <li><span class="k">Interest earned</span><span class="v" id="r-interest">—</span></li>
+              <li><span class="k">Same money at simple interest</span><span class="v" id="r-simple">—</span></li>
+              <li><span class="k">Extra from compounding</span><span class="v" id="r-compound-extra">—</span></li>
+            </ul>
+            <div class="insight-box" id="insight-box">
+              <h4>What this means</h4>
+              <p id="insight-text"></p>
+            </div>
+            <div class="chart-box">
+              <canvas id="ci-chart" height="240"></canvas>
+            </div>
+            <div class="result-note">Formula: FV = P(1 + r/n)<sup>nt</sup> + PMT × [((1 + r/n)<sup>nt</sup> − 1) / (r/n)]. Contributions grow linearly; the exponential curve is the power of compounding.</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="calc-sidebar">
+        <div class="side-widget">
+          <h4>How it works</h4>
+          <p class="small" style="color:var(--text-muted);">Future value formula:</p>
+          <div class="formula" style="font-size:13px; margin:8px 0;">FV = P(1+i)<sup>n</sup> + PMT × ((1+i)<sup>n</sup> − 1)/i</div>
+          <p class="small" style="color:var(--text-muted);">i = rate per period, n = periods.</p>
+        </div>
+        <div class="side-widget">
+          <h4>Related tools</h4>
+          <ul>
+            <li><a href="retirement-savings-calculator.html">Retirement Savings</a></li>
+            <li><a href="credit-card-payoff-calculator.html">Credit Card Payoff</a></li>
+          </ul>
+        </div>
+        <div class="side-widget">
+          <h4>The rule of 72</h4>
+          <p class="small" style="color:var(--text-muted);">Years to double ≈ 72 ÷ rate. At 7%, your money doubles every ~10.3 years. At 12%, every ~6 years.</p>
+        </div>
+      </aside>
+    </div>
+
+    <section class="prose mt-24">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="../articles/how-compound-interest-works.html">How Compound Interest Works</a></li>
+        <li><a href="../articles/rule-of-72-explained.html">The Rule of 72</a></li>
+      </ul>
+    </section>
+    <section class="prose mt-24">
+      <h2>What is compound interest?</h2>
+      <p>Compound interest is <strong>interest on interest</strong>. Instead of paying you a flat amount each year, your earnings get added to the principal and start earning too. Over long periods this creates exponential — not linear — growth.</p>
+      <p>Albert Einstein reportedly called it "the eighth wonder of the world." Whether or not he said it, the math is undeniable: over 30 years at 7%, most of your final balance comes from compounding, not from your own contributions.</p>
+
+      <h2>The formula</h2>
+      <p class="formula">FV = P(1 + r/n)<sup>nt</sup> + PMT × [ ((1 + r/n)<sup>nt</sup> − 1) / (r/n) ]</p>
+      <ul>
+        <li><strong>P</strong> = initial principal, <strong>PMT</strong> = periodic contribution</li>
+        <li><strong>r</strong> = annual rate, <strong>n</strong> = compounds per year, <strong>t</strong> = years</li>
+      </ul>
+
+      <h3>Worked example</h3>
+      <p>$10,000 initial, $300/month, 7%, monthly compounding, 20 years:</p>
+      <ul>
+        <li>Contributions = $10,000 + $300 × 240 = <strong>$82,000</strong></li>
+        <li>Future value = $10,000×(1.005833)^240 + $300×((1.005833)^240−1)/0.005833 ≈ <strong>$196,000</strong></li>
+        <li>Interest earned ≈ $196,000 − $82,000 = <strong>$114,000</strong> — more than half your total</li>
+      </ul>
+
+      <h2>The cost of waiting</h2>
+      <p>Delaying by a single year has an outsized effect because the last year's compounding is the largest of all. This is why the single most important factor in investing is <strong>time</strong>, not how clever you are with returns.</p>
+
+      <h2>Frequently asked questions</h2>
+      <div class="faq-item">
+        <button class="faq-q" type="button">How often should interest compound?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">More frequent compounding = slightly more growth, all else equal. Most savings accounts compound monthly; some accounts compound daily. The difference is small but real over long horizons.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Is 7% realistic?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">Before inflation, the US stock market has historically returned about 7–10% annually. After ~3% inflation, that's roughly 4–7% in real purchasing power. Use 5–7% as your planning range.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Does this account for taxes?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">No — this is a pre-tax projection. Tax-advantaged accounts (401k, IRA) let compounding run untaxed; taxable accounts are subject to capital gains rules in your jurisdiction.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>CalcNest</h4>
+          <p>Free calculators with transparent formulas and plain-English answers.</p>
+        </div>
+        <div>
+          <h4>Calculators</h4>
+          <ul>
+            <li><a href="rent-affordability-calculator.html">Rent Affordability</a></li>
+            <li><a href="retirement-savings-calculator.html">Retirement Savings</a></li>
+            <li><a href="credit-card-payoff-calculator.html">Credit Card Payoff</a></li>
+            <li><a href="compound-interest-calculator.html">Compound Interest</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+            <li><a href="../privacy.html">Privacy Policy</a></li>
+            <li><a href="../terms.html">Terms of Use</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> CalcNest. All rights reserved.</span>
+        <span>Not financial advice. Calculators are for estimation only.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie notice">
+    <span>We use cookies to understand how visitors use our site. See our <a href="../privacy.html">Privacy Policy</a>.</span>
+    <button class="btn btn-sm" id="cookie-accept">Accept</button>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/analytics.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var form = document.getElementById('ci-form');
+    var resultCard = document.getElementById('result-card');
+
+    function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+    function sanitize(v, def) {
+      var n = parseFloat(v);
+      if (isNaN(n) || !isFinite(n)) return (typeof def === 'undefined' ? 0 : def);
+      return n;
+    }
+
+    function finiteMoney(v) {
+      if (isNaN(v) || !isFinite(v)) return '—';
+      return money(v);
+    }
+
+    function futureValue(P, PMT, annualRate, years, perYear) {
+      var i = annualRate / 100 / perYear;
+      var n = Math.round(years * perYear);
+      if (i === 0) return P + PMT * n;
+      if (1 + i <= 0) return NaN; // 负利率 → 数学无意义
+      return P * Math.pow(1 + i, n) + PMT * ((Math.pow(1 + i, n) - 1) / i);
+    }
+
+    function simpleFutureValue(P, PMT, annualRate, years) {
+      // Simple interest on principal + contributions (no compounding)
+      if (annualRate < -100) return NaN;
+      return P * (1 + annualRate / 100 * years) + PMT * 12 * years * (1 + annualRate / 100 * years / 2);
+    }
+
+    function drawChart(values, labels) {
+      var canvas = document.getElementById('ci-chart');
+      if (!canvas) return;
+      var setup = CalcNest.setupCanvas(canvas, 560);
+      var ctx = setup.ctx, cw = setup.w, ch = setup.h;
+      var padL = 64, padR = 12, padT = 16, padB = 28;
+      var max = Math.max.apply(null, values) * 1.05 || 1;
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.font = '11px sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      for (var g = 0; g <= 4; g++) {
+        var gy = padT + (ch - padT - padB) * (1 - g / 4);
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(cw - padR, gy); ctx.stroke();
+        ctx.fillText(money(max * g / 4), 2, gy + 4);
+      }
+      var stepX = (cw - padL - padR) / (values.length - 1);
+      ctx.beginPath();
+      for (var k = 0; k < values.length; k++) {
+        var x = padL + k * stepX;
+        var y = padT + (ch - padT - padB) * (1 - values[k] / max);
+        if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+      }
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = '#64748b';
+      ctx.fillText(labels[0], padL, ch - 8);
+      ctx.fillText(labels[Math.floor(labels.length / 2)], padL + stepX * Math.floor(labels.length / 2) - 20, ch - 8);
+      ctx.fillText(labels[labels.length - 1], cw - padR - 30, ch - 8);
+    }
+
+    function calc(e) {
+      if (e) e.preventDefault();
+      var P = sanitize(document.getElementById('ci-principal').value, 0);
+      var PMT = sanitize(document.getElementById('ci-contribution').value, 0);
+      var rate = sanitize(document.getElementById('ci-rate').value, 0);
+      var years = sanitize(document.getElementById('ci-years').value, 0);
+      var perYear = sanitize(document.getElementById('ci-compound').value, 12);
+
+      // 边界防御：负利率/负值 = 数学无意义或无效输入
+      // 利率上限 100%：年回报率超过 100% 在现实金融中不存在，拒绝避免 Infinity/NaN
+      if (years <= 0 || rate < 0 || rate > 100 || P < 0 || PMT < 0) {
+        resultCard.classList.remove('show');
+        return;
+      }
+
+      var fv = futureValue(P, PMT, rate, years, perYear);
+      var contributed = P + PMT * 12 * years;
+      var interest = fv - contributed;
+      var simple = simpleFutureValue(P, PMT, rate, years);
+      var extra = fv - simple;
+
+      document.getElementById('result-fv').textContent = finiteMoney(fv);
+      document.getElementById('r-contrib').textContent = finiteMoney(contributed);
+      document.getElementById('r-interest').textContent = finiteMoney(interest);
+      document.getElementById('r-simple').textContent = finiteMoney(simple);
+      document.getElementById('r-compound-extra').textContent = finiteMoney(Math.max(0, extra));
+
+      var insight = document.getElementById('insight-text');
+      var growthRatio = fv / Math.max(1, contributed);
+      var pctInterest = Math.round(interest / Math.max(1, fv) * 100);
+      if (isNaN(fv) || !isFinite(fv)) {
+        insight.textContent = 'The combination of inputs does not produce a meaningful result. Please check that the interest rate is a normal positive percentage and try again.';
+      } else if (years >= 10) {
+        insight.textContent = 'Over ' + years + ' years your money grew ' + growthRatio.toFixed(1) + 'x. Interest (' + money(interest) + ') is ' + pctInterest + '% of your final balance — the last few years did most of the heavy lifting. Start a year earlier and the effect compounds further.';
+      } else {
+        insight.textContent = 'Over ' + years + ' years you earn ' + money(interest) + ' in interest, which is ' + pctInterest + '% of your final balance. Compounding grows exponentially — this same plan over 20+ years becomes dramatically larger.';
+      }
+
+      // chart
+      var values = [], labels = [];
+      var steps = Math.min(20, years);
+      for (var y = 0; y <= years; y += Math.max(1, Math.round(years / steps))) {
+        var fvY = futureValue(P, PMT, rate, y, perYear);
+        if (isNaN(fvY) || !isFinite(fvY)) { values = []; labels = []; break; }
+        values.push(fvY);
+        labels.push(String(y));
+      }
+      // 结果优先展示：图表失败不应中断结果（健壮性）
+      resultCard.classList.add('show');
+      if (window.CalcNestAnalytics) { window.CalcNestAnalytics.calcSubmit('compound-interest'); window.CalcNestAnalytics.resultShown('compound-interest'); }
+      if (values.length && values[values.length - 1] < fv) { values.push(fv); labels.push(String(years)); }
+      if (values.length) { try { drawChart(values, labels); } catch (err) { /* chart optional */ } }
+    }
+
+    form.addEventListener('submit', calc);
+  })();
+  </script>
+</body>
+</html>

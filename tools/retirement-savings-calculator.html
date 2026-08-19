@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Retirement Savings Calculator — Am I on Track? | CalcNest</title>
+  <meta name="description" content="Free retirement savings calculator. Project your nest egg with compound growth and monthly contributions, see your annual retirement income, and find out if you're on track.">
+  <link rel="canonical" href="https://calcnest.com/tools/retirement-savings-calculator.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563eb'/><text x='16' y='22' font-size='18' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>C</text></svg>">
+  <link rel="stylesheet" href="../css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Retirement Savings Calculator",
+    "url": "https://calcnest.com/tools/retirement-savings-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Project your retirement savings with compound growth and monthly contributions, and estimate annual retirement income.",
+    "featureList": ["Future value with contributions", "Annual retirement income (4% rule)", "Years to goal", "Growth chart"]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html" aria-label="CalcNest home">
+        <span class="logo-mark">C</span><span>CalcNest</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="rent-affordability-calculator.html">Rent</a></li>
+          <li><a href="retirement-savings-calculator.html" aria-current="page">Retirement</a></li>
+          <li><a href="credit-card-payoff-calculator.html">Debt</a></li>
+          <li><a href="compound-interest-calculator.html">Interest</a></li>
+          <li><a href="../about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> / Retirement Savings Calculator</p>
+    <h1 class="page-title">Retirement Savings Calculator</h1>
+    <p class="page-lead">See how your savings grow with compound interest, whether you&rsquo;re on track for your goal, and roughly what annual income you could live on in retirement.</p>
+
+    <div class="calc-layout">
+      <section>
+        <div class="calc-card" id="calc-card">
+          <form id="retire-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="current-savings">Current savings <span class="hint">(retirement accounts total)</span></label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="current-savings" inputmode="decimal" min="0" step="1000" value="20000" placeholder="20000">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="monthly-contribution">Monthly contribution</label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="monthly-contribution" inputmode="decimal" min="0" step="50" value="500" placeholder="500">
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="years-to-retire">Years until retirement</label>
+                <div class="input-wrap suffixed">
+                  <input type="number" id="years-to-retire" inputmode="numeric" min="1" max="60" step="1" value="25" placeholder="25">
+                  <span class="suffix">yrs</span>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="annual-return">Expected annual return</label>
+                <div class="input-wrap suffixed">
+                  <input type="number" id="annual-return" inputmode="decimal" min="0" max="20" step="0.5" value="7" placeholder="7">
+                  <span class="suffix">%</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="withdrawal-rate">Withdrawal rate in retirement <span class="hint">(4% is the classic safe withdrawal rule)</span></label>
+              <div class="input-wrap suffixed">
+                <input type="range" id="withdrawal-rate" min="3" max="6" step="0.5" value="4">
+                <span class="range-value">4%</span>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-block">Project my retirement</button>
+          </form>
+
+          <div class="result-card" id="result-card">
+            <h3 style="font-size:16px; font-weight:700;">Your retirement projection</h3>
+            <div class="result-big" id="result-nest-egg">—</div>
+            <ul class="result-list">
+              <li><span class="k">Your contributions total</span><span class="v" id="r-contributed">—</span></li>
+              <li><span class="k">Growth from interest</span><span class="v" id="r-interest">—</span></li>
+              <li><span class="k">Estimated annual income at 4%</span><span class="v" id="r-annual">—</span></li>
+              <li><span class="k">Estimated monthly income</span><span class="v" id="r-monthly">—</span></li>
+            </ul>
+            <div class="insight-box" id="insight-box">
+              <h4>What this means</h4>
+              <p id="insight-text"></p>
+            </div>
+            <div class="chart-box">
+              <canvas id="growth-chart" height="240"></canvas>
+            </div>
+            <div class="result-note">Formula: FV = P(1+r/n)^(nt) + PMT × [((1+r/n)^(nt)−1) / (r/n)]. Withdrawal income = NestEgg × 4%.</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="calc-sidebar">
+        <div class="side-widget">
+          <h4>How it works</h4>
+          <p class="small" style="color:var(--text-muted);">Standard future-value of an annuity:</p>
+          <div class="formula" style="font-size:13px; margin:8px 0;">FV = P(1+i)^n + PMT × ((1+i)^n − 1)/i</div>
+          <p class="small" style="color:var(--text-muted);">where i = monthly rate, n = months.</p>
+        </div>
+        <div class="side-widget">
+          <h4>Related tools</h4>
+          <ul>
+            <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+            <li><a href="rent-affordability-calculator.html">Rent Affordability</a></li>
+          </ul>
+        </div>
+        <div class="side-widget">
+          <h4>Disclaimer</h4>
+          <p class="small" style="color:var(--text-muted);">Returns are not guaranteed. Past performance does not predict future results. Adjust the return rate to be conservative.</p>
+        </div>
+      </aside>
+    </div>
+
+    <section class="prose mt-24">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="../articles/how-much-to-save-for-retirement.html">How Much Should I Save for Retirement?</a></li>
+        <li><a href="../articles/four-percent-rule-retirement-explained.html">The 4% Rule Explained</a></li>
+      </ul>
+    </section>
+    <section class="prose mt-24">
+      <h2>Am I saving enough for retirement?</h2>
+      <p>Two forces build your nest egg: the money you put in, and the compounding of what you already have. The earlier you start, the more powerful the second force becomes — this calculator shows exactly how the two interact over time.</p>
+
+      <h2>The math behind the projection</h2>
+      <p class="formula">FV = P(1+i)<sup>n</sup> + PMT × [ ((1+i)<sup>n</sup> − 1) / i ]</p>
+      <ul>
+        <li><strong>P</strong> = current savings, <strong>PMT</strong> = monthly contribution</li>
+        <li><strong>i</strong> = annual return ÷ 12 (monthly rate), <strong>n</strong> = years × 12 (months)</li>
+      </ul>
+      <p>Once you have the future value (nest egg), we estimate annual retirement income with the <strong>4% rule</strong>: a widely used guideline that you can safely withdraw about 4% of your portfolio per year over a 30-year retirement.</p>
+
+      <h3>Worked example</h3>
+      <p>Current savings $20,000, $500/month, 25 years, 7% return, 4% withdrawal:</p>
+      <ul>
+        <li>Monthly rate i = 0.07/12 ≈ 0.005833, n = 25×12 = 300</li>
+        <li>Growth of current savings: $20,000 × (1.005833)^300 ≈ <strong>$113,000</strong></li>
+        <li>Growth of contributions: $500 × ((1.005833)^300 − 1)/0.005833 ≈ <strong>$375,000</strong></li>
+        <li>Nest egg ≈ $488,000 → annual income ≈ $488,000 × 4% ≈ <strong>$19,500/year</strong></li>
+      </ul>
+
+      <h2>Frequently asked questions</h2>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Is 7% return realistic?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">Historically, the S&amp;P 500 has returned roughly 7–10% before inflation. 7% is a reasonable central estimate; 5% is conservative. Run the calculator at both rates to see the range.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">What is the 4% rule?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">The 4% rule says withdraw 4% of your nest egg in your first retirement year, then adjust for inflation. It was designed to make a portfolio last 30 years and is a starting point, not a guarantee.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Should I include inflation?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">This calculator uses nominal dollars. To think in today&rsquo;s dollars, reduce your return rate by expected inflation (e.g. use 7% − 3% = 4% real). That gives a more conservative picture.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>CalcNest</h4>
+          <p>Free calculators with transparent formulas and plain-English answers.</p>
+        </div>
+        <div>
+          <h4>Calculators</h4>
+          <ul>
+            <li><a href="rent-affordability-calculator.html">Rent Affordability</a></li>
+            <li><a href="retirement-savings-calculator.html">Retirement Savings</a></li>
+            <li><a href="credit-card-payoff-calculator.html">Credit Card Payoff</a></li>
+            <li><a href="compound-interest-calculator.html">Compound Interest</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+            <li><a href="../privacy.html">Privacy Policy</a></li>
+            <li><a href="../terms.html">Terms of Use</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> CalcNest. All rights reserved.</span>
+        <span>Not financial advice. Calculators are for estimation only.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie notice">
+    <span>We use cookies to understand how visitors use our site. See our <a href="../privacy.html">Privacy Policy</a>.</span>
+    <button class="btn btn-sm" id="cookie-accept">Accept</button>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/analytics.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var form = document.getElementById('retire-form');
+    var resultCard = document.getElementById('result-card');
+    var rateSlider = document.getElementById('withdrawal-rate');
+    var rateLabel = rateSlider.nextElementSibling;
+    rateSlider.addEventListener('input', function () { rateLabel.textContent = rateSlider.value + '%'; });
+
+    function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+    function sanitize(v, def) {
+      var n = parseFloat(v);
+      if (isNaN(n) || !isFinite(n)) return (typeof def === 'undefined' ? 0 : def);
+      return n;
+    }
+
+    function futureValue(P, PMT, annualRate, years) {
+      var i = annualRate / 100 / 12;
+      var n = Math.round(years * 12);
+      if (i === 0) return P + PMT * n;
+      if (1 + i <= 0) return NaN; // 负利率 → 数学无意义
+      return P * Math.pow(1 + i, n) + PMT * ((Math.pow(1 + i, n) - 1) / i);
+    }
+
+    function finiteMoney(v) {
+      if (isNaN(v) || !isFinite(v)) return '—';
+      return money(v);
+    }
+
+    function drawChart(values, labels, w) {
+      var canvas = document.getElementById('growth-chart');
+      if (!canvas) return;
+      var setup = CalcNest.setupCanvas(canvas, w || 560);
+      var ctx = setup.ctx, cw = setup.w, ch = setup.h;
+      var padL = 64, padR = 12, padT = 16, padB = 28;
+      var max = Math.max.apply(null, values) * 1.05 || 1;
+      ctx.clearRect(0, 0, cw, ch);
+      // grid + labels
+      ctx.font = '11px sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      for (var g = 0; g <= 4; g++) {
+        var gy = padT + (ch - padT - padB) * (1 - g / 4);
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(cw - padR, gy); ctx.stroke();
+        ctx.fillText(money(max * g / 4), 2, gy + 4);
+      }
+      // area + line
+      var stepX = (cw - padL - padR) / (values.length - 1);
+      ctx.beginPath();
+      ctx.moveTo(padL, ch - padB);
+      for (var k = 0; k < values.length; k++) {
+        var x = padL + k * stepX;
+        var y = padT + (ch - padT - padB) * (1 - values[k] / max);
+        ctx.lineTo(x, y);
+      }
+      ctx.lineTo(cw - padR, ch - padB);
+      ctx.closePath();
+      ctx.fillStyle = 'rgba(37,99,235,0.12)';
+      ctx.fill();
+      ctx.beginPath();
+      for (var m = 0; m < values.length; m++) {
+        var x2 = padL + m * stepX;
+        var y2 = padT + (ch - padT - padB) * (1 - values[m] / max);
+        if (m === 0) ctx.moveTo(x2, y2); else ctx.lineTo(x2, y2);
+      }
+      ctx.strokeStyle = '#2563eb';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      // x labels (start / mid / end)
+      ctx.fillStyle = '#64748b';
+      ctx.fillText(labels[0], padL, ch - 8);
+      ctx.fillText(labels[Math.floor(labels.length / 2)], padL + stepX * Math.floor(labels.length / 2) - 20, ch - 8);
+      ctx.fillText(labels[labels.length - 1], cw - padR - 30, ch - 8);
+    }
+
+    function calc(e) {
+      if (e) e.preventDefault();
+      var P = sanitize(document.getElementById('current-savings').value, 0);
+      var PMT = sanitize(document.getElementById('monthly-contribution').value, 0);
+      var years = sanitize(document.getElementById('years-to-retire').value, 0);
+      var rate = sanitize(document.getElementById('annual-return').value, 0);
+      var wd = sanitize(rateSlider.value, 4) / 100;
+
+      // 边界防御：负利率/负值 = 数学无意义或无效输入
+      // 利率上限 100%：年回报率超过 100% 在现实金融中不存在，拒绝避免 Infinity/NaN
+      if (years <= 0 || rate < 0 || rate > 100 || P < 0 || PMT < 0) {
+        resultCard.classList.remove('show');
+        return;
+      }
+
+      var fv = futureValue(P, PMT, rate, years);
+      var contributed = P + PMT * years * 12;
+      var interest = fv - contributed;
+      var annualIncome = fv * wd;
+      var monthlyIncome = annualIncome / 12;
+
+      document.getElementById('result-nest-egg').textContent = finiteMoney(fv);
+      document.getElementById('r-contributed').textContent = finiteMoney(contributed);
+      document.getElementById('r-interest').textContent = finiteMoney(interest);
+      document.getElementById('r-annual').textContent = finiteMoney(annualIncome);
+      document.getElementById('r-monthly').textContent = finiteMoney(monthlyIncome);
+
+      var insight = document.getElementById('insight-text');
+      var monthlyTarget = 3000; // rough "replace 60% of avg income" proxy
+      if (isNaN(fv) || !isFinite(fv)) {
+        insight.textContent = 'The combination of inputs does not produce a meaningful result. Please check that the return rate is a normal positive percentage and try again.';
+      } else if (monthlyIncome >= monthlyTarget * 2) {
+        insight.textContent = 'Strong result: your projected income covers about ' + Math.round(monthlyIncome / 1000) + 'x a basic monthly budget. The power of compounding is working for you — the interest portion (' + money(interest) + ') is ' + Math.round(interest / Math.max(1, contributed) * 100) + '% of your total nest egg.';
+      } else if (monthlyIncome >= monthlyTarget) {
+        insight.textContent = 'On track: you could draw about ' + money(monthlyIncome) + '/month at a ' + Math.round(wd * 100) + '% withdrawal rate. That is a solid base, though not lavish. Consider bumping contributions by ' + money(Math.round(PMT * 0.25)) + '/month to build margin.';
+      } else {
+        insight.textContent = 'Warning: at ' + money(monthlyIncome) + '/month, your nest egg would support a tight retirement. Interest adds ' + money(interest) + ', but you may need a higher contribution rate, a later retirement age, or a lower withdrawal expectation to be comfortable.';
+      }
+
+      // chart
+      var values = [], labels = [];
+      for (var y = 0; y <= years; y += Math.max(1, Math.floor(years / 8))) {
+        var fvY = futureValue(P, PMT, rate, y);
+        if (isNaN(fvY) || !isFinite(fvY)) { values = []; labels = []; break; }
+        values.push(fvY);
+        labels.push(String(y));
+      }
+      // 结果优先展示：图表失败不应中断结果（健壮性）
+      resultCard.classList.add('show');
+      if (window.CalcNestAnalytics) { window.CalcNestAnalytics.calcSubmit('retirement-savings'); window.CalcNestAnalytics.resultShown('retirement-savings'); }
+      if (values.length && values[values.length - 1] < fv) { values.push(fv); labels.push(String(years)); }
+      if (values.length) { try { drawChart(values, labels); } catch (err) { /* chart optional */ } }
+    }
+
+    form.addEventListener('submit', calc);
+  })();
+  </script>
+</body>
+</html>

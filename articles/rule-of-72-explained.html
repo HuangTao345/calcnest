@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Rule of 72 Explained: How Fast Will Your Money Double? | CalcNest</title>
+  <meta name="description" content="The rule of 72 explained: a simple mental math trick to estimate how fast money doubles, with examples, accuracy limits, and how to use it for investing decisions.">
+  <link rel="canonical" href="https://calcnest.com/articles/rule-of-72-explained.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563eb'/><text x='16' y='22' font-size='18' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>C</text></svg>">
+  <link rel="stylesheet" href="../css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "The Rule of 72 Explained",
+    "description": "How the rule of 72 estimates doubling time, with examples, accuracy limits, and investing applications.",
+    "author": { "@type": "Organization", "name": "CalcNest" },
+    "publisher": { "@type": "Organization", "name": "CalcNest" },
+    "datePublished": "2026-08-19",
+    "dateModified": "2026-08-19",
+    "mainEntityOfPage": "https://calcnest.com/articles/rule-of-72-explained.html"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How accurate is the rule of 72?",
+        "acceptedAnswer": { "@type": "Answer", "text": "It's very accurate for rates between 4% and 15% — usually within a few months. Outside that range, the estimate drifts and you should use the exact formula." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the rule of 72 work for debt too?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Yes. If credit card debt grows at 22% APR, it doubles in roughly 72 ÷ 22 = 3.3 years. That's a quick way to see how dangerous high-APR debt is." }
+      },
+      {
+        "@type": "Question",
+        "name": "Why 72 and not another number?",
+        "acceptedAnswer": { "@type": "Answer", "text": "72 has many divisors (1,2,3,4,6,8,9,12...), making mental math easy. It's also the value that best matches the true doubling formula for common interest rates." }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html" aria-label="CalcNest home">
+        <span class="logo-mark">C</span><span>CalcNest</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../tools/rent-affordability-calculator.html">Rent</a></li>
+          <li><a href="../tools/retirement-savings-calculator.html">Retirement</a></li>
+          <li><a href="../tools/credit-card-payoff-calculator.html">Debt</a></li>
+          <li><a href="../tools/compound-interest-calculator.html">Interest</a></li>
+          <li><a href="../about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container section">
+    <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="../tools/compound-interest-calculator.html">Compound Interest Calculator</a> / Rule of 72</p>
+    <article class="prose">
+      <h1>The Rule of 72 Explained: How Fast Will Your Money Double?</h1>
+      <p class="muted small">Last updated: August 19, 2026 &middot; 7 min read</p>
+
+      <p>Here&rsquo;s a question every investor should be able to answer in their head: <em>if my money grows at 7%, how long until it doubles?</em> Most people would reach for a spreadsheet. But there&rsquo;s a beautiful mental shortcut called the <strong>rule of 72</strong> that answers it in two seconds. Here&rsquo;s what it is, why it works, and how to use it for investing and debt decisions.</p>
+
+      <h2>The rule in one line</h2>
+      <div class="formula">Years to double &asymp; 72 &divide; annual interest rate</div>
+      <p>That&rsquo;s it. Take 72, divide by your annual rate (as a whole number), and you get roughly how many years your money takes to double.</p>
+      <table>
+        <tr><th>Annual rate</th><th>Years to double (rule)</th><th>Exact</th></tr>
+        <tr><td>4%</td><td>18</td><td>17.7</td></tr>
+        <tr><td>6%</td><td>12</td><td>11.9</td></tr>
+        <tr><td>7%</td><td>10.3</td><td>10.2</td></tr>
+        <tr><td>10%</td><td>7.2</td><td>7.3</td></tr>
+        <tr><td>12%</td><td>6</td><td>6.1</td></tr>
+      </table>
+      <p>Notice how close the rule is to the exact math &mdash; within a few months across the whole realistic range.</p>
+
+      <h2>Why 72? (and why it works)</h2>
+      <p>The exact formula for doubling is <strong>t = ln(2) / ln(1 + r)</strong>, where r is the rate as a decimal. That&rsquo;s 0.693 &divide; ln(1+r), and for small r, ln(1+r) &asymp; r, so t &asymp; 0.693 / r = 69.3 / (r&times;100).</p>
+      <p>So why 72 instead of 69.3? Two reasons:</p>
+      <ul>
+        <li><strong>Mental math.</strong> 72 has many divisors (1, 2, 3, 4, 6, 8, 9, 12, 18, 24, 36), so most rates divide cleanly. 69.3 gives ugly fractions.</li>
+        <li><strong>Accuracy.</strong> At typical rates (4&ndash;12%), the small approximation error of using 72 instead of 69.3 actually <em>cancels out</em> the ln(1+r)&asymp;r approximation, making 72 more accurate than 69.3 in the everyday range.</li>
+      </ul>
+      <p>It&rsquo;s a coincidence of math that happens to be perfect for real-world interest rates.</p>
+
+      <h2>How to use it for investing</h2>
+      <p>The rule shines for comparing options quickly:</p>
+      <ul>
+        <li><strong>7% stock market average:</strong> money doubles every ~10 years. $20,000 &rarr; $40,000 in 10 years &rarr; $80,000 in 20 &rarr; $160,000 in 30.</li>
+        <li><strong>10% aggressive portfolio:</strong> doubles every ~7 years.</li>
+        <li><strong>0.5% savings account:</strong> doubles every 144 years. This instantly shows why cash isn&rsquo;t an investment.</li>
+        <li><strong>3% inflation:</strong> prices double every 24 years &mdash; why your money needs to grow faster than inflation.</li>
+      </ul>
+      <p>It also works in reverse: <em>if I want my money to double in 10 years, what return do I need?</em> 72 &divide; 10 = 7.2%.</p>
+      <p>This reverse version is especially useful when comparing investment offers. A broker claims their fund returns 9% &mdash; your money doubles every 8 years. A certificate of deposit offers 5% &mdash; doubling takes 14.4 years. In one glance, you see the 6-year difference in compounding cycles, which compounds into a massive dollar gap over a lifetime. The rule turns a sales pitch into a comparison you can do in your head, without a calculator or a financial advisor&rsquo;s permission.</p>
+
+      <h2>The dark side: rule of 72 for debt</h2>
+      <p>The same rule measures how fast debt grows &mdash; and that&rsquo;s where it becomes a warning:</p>
+      <ul>
+        <li><strong>22% APR credit card:</strong> debt doubles in ~3.3 years. A $6,000 balance becomes $12,000 in 3.3 years if untouched.</li>
+        <li><strong>19% store card:</strong> doubles every ~3.8 years.</li>
+        <li><strong>8% car loan:</strong> doubles every 9 years.</li>
+      </ul>
+      <p>This is the fastest way to explain why high-APR debt is an emergency: <strong>your money halving every 3 years is the same math as your debt doubling.</strong></p>
+
+      <h2>Case study: The $10,000 question</h2>
+      <p>Two friends each have $10,000 to invest at 30:</p>
+      <ul>
+        <li><strong>Sam</strong> invests in a diversified index fund, ~7%: doubles every ~10 years. At 30: $10k. At 40: $20k. At 50: $40k. At 60: $80k. At 70: <strong>$160k</strong>.</li>
+        <li><strong>Alex</strong> leaves it in a 0.5% savings account: doubles every 144 years. At 70, it&rsquo;s worth about <strong>$12,100</strong>.</li>
+      </ul>
+      <p>Same starting money, same 40 years &mdash; a $148,000 difference. The rule of 72 makes the reason visible in seconds: 7% doubles 4 times in 40 years; 0.5% barely moves.</p>
+
+      <h2>Limits of the rule</h2>
+      <ul>
+        <li><strong>Very high rates (&gt;15%):</strong> the approximation drifts. Use the exact formula instead.</li>
+        <li><strong>Very low rates (&lt;2%):</strong> the estimate is less meaningful (doubling takes so long it&rsquo;s irrelevant).</li>
+        <li><strong>Contributions change it:</strong> if you add money monthly, doubling happens faster &mdash; the rule assumes a lump sum. For contributions, use our <a href="../tools/compound-interest-calculator.html">compound interest calculator</a>.</li>
+      </ul>
+
+      <h2>Your action checklist</h2>
+      <ol>
+        <li>Divide 72 by the rate on each of your accounts &mdash; investments and debts.</li>
+        <li>Compare: does any debt double faster than your investments grow? That&rsquo;s the debt to attack first.</li>
+        <li>Check your savings account rate. If it doubles in 144 years, that&rsquo;s your signal to invest.</li>
+        <li>Run the exact numbers in our <a href="../tools/compound-interest-calculator.html">calculator</a> for any serious decision.</li>
+      </ol>
+
+      <h2>Frequently asked questions</h2>
+      <div class="faq-item">
+        <button class="faq-q" type="button">How accurate is the rule of 72?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">It&rsquo;s very accurate for rates between 4% and 15% &mdash; usually within a few months. Outside that range, the estimate drifts and you should use the exact formula.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Does the rule of 72 work for debt too?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">Yes. If credit card debt grows at 22% APR, it doubles in roughly 72 &divide; 22 = 3.3 years. That&rsquo;s a quick way to see how dangerous high-APR debt is.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Why 72 and not another number?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">72 has many divisors (1, 2, 3, 4, 6, 8, 9, 12&hellip;), making mental math easy. It&rsquo;s also the value that best matches the true doubling formula for common interest rates.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Does the rule of 72 include monthly contributions?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">No &mdash; it assumes a lump sum. Adding monthly contributions makes doubling happen faster. For accurate projections with contributions, use a compound interest calculator.</div>
+      </div>
+
+      <h2>Bottom line</h2>
+      <p>The rule of 72 turns a spreadsheet problem into a two-second mental check: <strong>72 &divide; rate = years to double.</strong> Use it to compare investments, spot dangerous debt, and stay motivated about compound growth. <a href="../tools/compound-interest-calculator.html">Run the exact numbers</a> whenever the stakes are real.</p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>CalcNest</h4>
+          <p>Free calculators with transparent formulas and plain-English answers.</p>
+        </div>
+        <div>
+          <h4>Calculators</h4>
+          <ul>
+            <li><a href="../tools/rent-affordability-calculator.html">Rent Affordability</a></li>
+            <li><a href="../tools/retirement-savings-calculator.html">Retirement Savings</a></li>
+            <li><a href="../tools/credit-card-payoff-calculator.html">Credit Card Payoff</a></li>
+            <li><a href="../tools/compound-interest-calculator.html">Compound Interest</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+            <li><a href="../privacy.html">Privacy Policy</a></li>
+            <li><a href="../terms.html">Terms of Use</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span id="year">2026</span> CalcNest. All rights reserved.</span>
+        <span>Not financial advice. Calculators are for estimation only.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie notice">
+    <span>We use cookies to understand how visitors use our site. See our <a href="../privacy.html">Privacy Policy</a>.</span>
+    <button class="btn btn-sm" id="cookie-accept">Accept</button>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

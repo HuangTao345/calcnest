@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rent Affordability Calculator — How Much Rent Can I Afford? | CalcNest</title>
+  <meta name="description" content="Free rent affordability calculator. See how much rent you can afford based on your income, debts and savings — with the 30% rule, debt-to-income ratio, and a plain-English breakdown.">
+  <link rel="canonical" href="https://calcnest.com/tools/rent-affordability-calculator.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563eb'/><text x='16' y='22' font-size='18' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>C</text></svg>">
+  <link rel="stylesheet" href="../css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Rent Affordability Calculator",
+    "url": "https://calcnest.com/tools/rent-affordability-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Calculate how much rent you can afford based on gross income, monthly debts and the 30% rule.",
+    "featureList": [
+      "30% of gross income rule",
+      "Debt-to-income ratio check",
+      "Safe / tight / overshoot zones",
+      "Step-by-step formula"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How much rent can I afford with the 30% rule?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "The 30% rule says spend no more than 30% of your gross monthly income on rent. Multiply your monthly gross income by 0.30 to get the maximum affordable rent under this rule."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What is a good debt-to-income ratio for renters?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Landlords often accept a debt-to-income ratio up to 43%, but a ratio of 36% or less is considered safer. It compares all monthly debt payments to gross monthly income."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Should rent be 30% of gross or net income?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Most guides use gross income for simplicity, but using net (take-home) income is more conservative and realistic. This calculator shows both."
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html" aria-label="CalcNest home">
+        <span class="logo-mark">C</span><span>CalcNest</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="rent-affordability-calculator.html" aria-current="page">Rent</a></li>
+          <li><a href="retirement-savings-calculator.html">Retirement</a></li>
+          <li><a href="credit-card-payoff-calculator.html">Debt</a></li>
+          <li><a href="compound-interest-calculator.html">Interest</a></li>
+          <li><a href="../about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> / Rent Affordability Calculator</p>
+    <h1 class="page-title">Rent Affordability Calculator</h1>
+    <p class="page-lead">How much rent can you actually afford? Based on your income, monthly debts, and savings rate, this calculator finds your safe rent range and explains what the numbers mean.</p>
+
+    <div class="calc-layout">
+      <!-- Main calculator -->
+      <section>
+        <div class="calc-card" id="calc-card">
+          <form id="rent-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="gross-income">Monthly gross income (before tax)</label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="gross-income" inputmode="decimal" min="0" step="100" value="5000" placeholder="5000">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="monthly-debts">Monthly debt payments <span class="hint">(loans, cards, car, student)</span></label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="monthly-debts" inputmode="decimal" min="0" step="50" value="600" placeholder="600">
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="monthly-expenses">Other monthly expenses <span class="hint">(food, transport, utilities)</span></label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="monthly-expenses" inputmode="decimal" min="0" step="50" value="900" placeholder="900">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="savings-target">Monthly savings target <span class="hint">(optional)</span></label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="savings-target" inputmode="decimal" min="0" step="50" value="400" placeholder="400">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="city-rule">Rule of thumb</label>
+              <select id="city-rule" class="input-wrap" style="width:100%; padding:12px; border:1px solid var(--border-strong); border-radius:var(--radius-sm); font-size:16px;">
+                <option value="30">30% of gross income (standard)</option>
+                <option value="35">35% of gross income (high-cost cities)</option>
+                <option value="25">25% of gross income (conservative)</option>
+              </select>
+            </div>
+            <button type="submit" class="btn btn-block">Calculate my affordable rent</button>
+          </form>
+
+          <!-- Results -->
+          <div class="result-card" id="result-card">
+            <h3 style="font-size:16px; font-weight:700;">Your affordable rent range</h3>
+            <div class="result-big" id="result-rent-range">—</div>
+            <ul class="result-list">
+              <li><span class="k">Safe rent (30% rule)</span><span class="v" id="r-safe">—</span></li>
+              <li><span class="k">With savings &amp; expenses covered</span><span class="v" id="r-leftover">—</span></li>
+              <li><span class="k">Debt-to-income ratio</span><span class="v" id="r-dti">—</span></li>
+              <li><span class="k">Remaining after rent</span><span class="v" id="r-remaining">—</span></li>
+            </ul>
+            <div class="insight-box" id="insight-box">
+              <h4>What this means</h4>
+              <p id="insight-text"></p>
+            </div>
+            <div class="result-note">Rule of thumb: your rent should be no more than 30% of gross income, and your total debt payments (including rent) should stay below 43% of gross income. Rent = <code>Gross × Rule%</code>.</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sidebar -->
+      <aside class="calc-sidebar">
+        <div class="side-widget">
+          <h4>How it works</h4>
+          <p class="small" style="color:var(--text-muted);">Formula used:</p>
+          <div class="formula" style="font-size:13px; margin:8px 0;">SafeRent = Gross × Rule%<br>DTI = (Debts + Rent) ÷ Gross<br>AfterRent = Gross − Debts − Expenses − Rent</div>
+        </div>
+        <div class="side-widget">
+          <h4>Related tools</h4>
+          <ul>
+            <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+            <li><a href="retirement-savings-calculator.html">Retirement Savings Calculator</a></li>
+          </ul>
+        </div>
+        <div class="side-widget">
+          <h4>Why trust this?</h4>
+          <p class="small" style="color:var(--text-muted);">Runs 100% in your browser. The 30% rule and 43% DTI guide are standard lender benchmarks.</p>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Content: differentiation for SEO + AI -->
+    <section class="prose mt-24">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="../articles/how-much-rent-can-i-afford.html">How Much Rent Can I Afford?</a></li>
+        <li><a href="../articles/rent-to-income-ratio-explained.html">Rent-to-Income Ratio Explained</a></li>
+      </ul>
+    </section>
+    <section class="prose mt-24">
+      <h2>How much rent can you afford?</h2>
+      <p>Most financial advisors use two quick rules of thumb to size a rent budget:</p>
+      <ul>
+        <li><strong>The 30% rule:</strong> keep rent at or below 30% of your gross monthly income. In expensive cities like New York or San Francisco, 35% is often used; in low-cost areas, 25% is comfortable.</li>
+        <li><strong>The debt-to-income (DTI) ceiling:</strong> your total monthly debt payments — rent included — should stay below 43% of gross income. Above that, lenders and landlords see you as over-leveraged.</li>
+      </ul>
+      <p>This calculator uses both, then subtracts your other monthly expenses and savings target to give you a realistic "leftover" number.</p>
+
+      <h2>How the calculation works</h2>
+      <p class="formula">SafeRent = GrossIncome × Rule%</p>
+      <p class="formula">DTI = (MonthlyDebts + Rent) ÷ GrossIncome × 100</p>
+      <p class="formula">AfterRent = GrossIncome − Debts − Expenses − SavingsTarget</p>
+      <p>The <strong>AfterRent</strong> number is the true test: if you subtract your rent from what&rsquo;s left after debts, expenses, and savings, and the result is still positive, your budget is realistic. If it&rsquo;s negative, that rent level is unsustainable.</p>
+
+      <h3>Worked example</h3>
+      <p>Take a gross income of $5,000/month, $600 in debts, $900 in other expenses, and a $400 savings target:</p>
+      <ul>
+        <li>Safe rent at 30% = $5,000 × 0.30 = <strong>$1,500</strong></li>
+        <li>DTI if rent = $1,500: ($600 + $1,500) ÷ $5,000 = <strong>42%</strong> — just under the 43% ceiling ✓</li>
+        <li>After rent: $5,000 − $600 − $900 − $400 − $1,500 = <strong>$1,600 remaining</strong> — comfortable ✓</li>
+      </ul>
+
+      <h2>Frequently asked questions</h2>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Should rent be 30% of gross or net income?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">Most guides use gross (before-tax) income for simplicity. Using net (take-home) income is more conservative. This calculator shows the 30% rule on gross income, but the "AfterRent" line effectively uses your real cash flow.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">What if I live in a high-cost city?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">Switch the rule to 35% in the dropdown. Many renters in major cities exceed 30%, but you should also check the DTI stays under 43% and your after-rent cash flow stays positive.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Does this include utilities?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">No — "rent" here is the base rent. Utilities, parking, and renters insurance usually add 10–15% on top, so keep them in mind when comparing listings.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>CalcNest</h4>
+          <p>Free calculators with transparent formulas and plain-English answers.</p>
+        </div>
+        <div>
+          <h4>Calculators</h4>
+          <ul>
+            <li><a href="rent-affordability-calculator.html">Rent Affordability</a></li>
+            <li><a href="retirement-savings-calculator.html">Retirement Savings</a></li>
+            <li><a href="credit-card-payoff-calculator.html">Credit Card Payoff</a></li>
+            <li><a href="compound-interest-calculator.html">Compound Interest</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+            <li><a href="../privacy.html">Privacy Policy</a></li>
+            <li><a href="../terms.html">Terms of Use</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> CalcNest. All rights reserved.</span>
+        <span>Not financial advice. Calculators are for estimation only.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie notice">
+    <span>We use cookies to understand how visitors use our site. See our <a href="../privacy.html">Privacy Policy</a>.</span>
+    <button class="btn btn-sm" id="cookie-accept">Accept</button>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/analytics.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var form = document.getElementById('rent-form');
+    var resultCard = document.getElementById('result-card');
+
+    function money(n) { return '$' + n.toLocaleString('en-US', {minimumFractionDigits: 0, maximumFractionDigits: 0}); }
+
+    function sanitize(v, def) {
+      var n = parseFloat(v);
+      if (isNaN(n) || !isFinite(n)) return (typeof def === 'undefined' ? 0 : def);
+      return n;
+    }
+
+    function finiteMoney(v) {
+      if (isNaN(v) || !isFinite(v)) return '—';
+      return money(v);
+    }
+
+    function calc(e) {
+      if (e) e.preventDefault();
+      var gross = sanitize(document.getElementById('gross-income').value, 0);
+      var debts = sanitize(document.getElementById('monthly-debts').value, 0);
+      var expenses = sanitize(document.getElementById('monthly-expenses').value, 0);
+      var savings = sanitize(document.getElementById('savings-target').value, 0);
+      var rule = sanitize(document.getElementById('city-rule').value, 30) / 100;
+
+      // 边界防御：收入必须为正，其余项必须非负（负值 = 无效输入）
+      if (gross <= 0 || debts < 0 || expenses < 0 || savings < 0) {
+        resultCard.classList.remove('show');
+        return;
+      }
+
+      var safeRent = gross * rule;
+      var dti = ((debts + safeRent) / gross) * 100;
+      var remaining = gross - debts - expenses - savings - safeRent;
+
+      document.getElementById('r-safe').textContent = finiteMoney(safeRent);
+      document.getElementById('r-leftover').textContent = finiteMoney(remaining >= 0 ? safeRent : Math.max(0, gross - debts - expenses - savings));
+      document.getElementById('r-dti').textContent = (isFinite(dti) ? dti.toFixed(1) : '—') + '%';
+      document.getElementById('r-remaining').textContent = finiteMoney(remaining);
+
+      // Insight text (differentiation)
+      var insight = document.getElementById('insight-text');
+      var msg = [];
+      if (dti > 43) {
+        msg.push('Your debt-to-income ratio would be ' + dti.toFixed(1) + '%, above the 43% ceiling. Landlords may hesitate — consider a cheaper rental or paying down debt first.');
+      } else if (dti > 36) {
+        msg.push('Your DTI is ' + dti.toFixed(1) + '%, within the 43% ceiling but above the safer 36% level. It will work, but leave little margin.');
+      } else {
+        msg.push('Your DTI is ' + dti.toFixed(1) + '%, comfortably within the safe 36% range.');
+      }
+      if (remaining < 0) {
+        msg.push('After rent, debts, expenses and savings you would be short ' + money(-remaining) + ' per month. This budget is not sustainable — lower the rent target.');
+      } else if (remaining < 200) {
+        msg.push('After rent and everything else, you would have only ' + money(remaining) + ' left. Tight — look for a slightly cheaper place.');
+      } else {
+        msg.push('After rent and all other costs, you would keep ' + money(remaining) + ' per month. A realistic, sustainable budget.');
+      }
+      insight.textContent = msg.join(' ');
+
+      resultCard.classList.add('show');
+      if (window.CalcNestAnalytics) { window.CalcNestAnalytics.calcSubmit('rent-affordability'); window.CalcNestAnalytics.resultShown('rent-affordability'); }
+    }
+
+    form.addEventListener('submit', calc);
+  })();
+  </script>
+</body>
+</html>

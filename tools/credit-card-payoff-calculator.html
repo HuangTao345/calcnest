@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credit Card Payoff Calculator — When Will I Be Debt Free? | CalcNest</title>
+  <meta name="description" content="Free credit card payoff calculator. See how many months to become debt-free, total interest paid, and how extra monthly payments accelerate your payoff.">
+  <link rel="canonical" href="https://calcnest.com/tools/credit-card-payoff-calculator.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563eb'/><text x='16' y='22' font-size='18' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>C</text></svg>">
+  <link rel="stylesheet" href="../css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Credit Card Payoff Calculator",
+    "url": "https://calcnest.com/tools/credit-card-payoff-calculator.html",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "description": "Calculate how long it takes to pay off credit card debt and how much interest you save with extra payments.",
+    "featureList": ["Months to debt-free", "Total interest paid", "Extra payment savings", "Payoff schedule chart"]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html" aria-label="CalcNest home">
+        <span class="logo-mark">C</span><span>CalcNest</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="rent-affordability-calculator.html">Rent</a></li>
+          <li><a href="retirement-savings-calculator.html">Retirement</a></li>
+          <li><a href="credit-card-payoff-calculator.html" aria-current="page">Debt</a></li>
+          <li><a href="compound-interest-calculator.html">Interest</a></li>
+          <li><a href="../about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="breadcrumb"><a href="../index.html">Home</a> / Credit Card Payoff Calculator</p>
+    <h1 class="page-title">Credit Card Payoff Calculator</h1>
+    <p class="page-lead">Enter your balance, APR and monthly payment to see exactly when you&rsquo;ll be debt-free — and how much interest a slightly bigger payment saves you.</p>
+
+    <div class="calc-layout">
+      <section>
+        <div class="calc-card" id="calc-card">
+          <form id="cc-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cc-balance">Current balance</label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="cc-balance" inputmode="decimal" min="0" step="100" value="6000" placeholder="6000">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="cc-apr">Annual interest rate (APR)</label>
+                <div class="input-wrap suffixed">
+                  <input type="number" id="cc-apr" inputmode="decimal" min="0" max="40" step="0.5" value="22" placeholder="22">
+                  <span class="suffix">%</span>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="cc-min-payment">Minimum payment <span class="hint">(or minimum % of balance)</span></label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="cc-min-payment" inputmode="decimal" min="0" step="10" value="120" placeholder="120">
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="cc-extra">Extra payment per month <span class="hint">(beyond minimum)</span></label>
+                <div class="input-wrap prefixed">
+                  <span class="prefix">$</span>
+                  <input type="number" id="cc-extra" inputmode="decimal" min="0" step="10" value="100" placeholder="100">
+                </div>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-block">Calculate my payoff date</button>
+          </form>
+
+          <div class="result-card" id="result-card">
+            <h3 style="font-size:16px; font-weight:700;">Your payoff plan</h3>
+            <div class="result-big" id="result-months">—</div>
+            <ul class="result-list">
+              <li><span class="k">Total paid over the plan</span><span class="v" id="r-total-paid">—</span></li>
+              <li><span class="k">Total interest paid</span><span class="v" id="r-total-interest">—</span></li>
+              <li><span class="k">Interest saved vs minimum-only</span><span class="v" id="r-saved">—</span></li>
+              <li><span class="k">Payoff date (approx.)</span><span class="v" id="r-date">—</span></li>
+            </ul>
+            <div class="insight-box" id="insight-box">
+              <h4>What this means</h4>
+              <p id="insight-text"></p>
+            </div>
+            <div class="chart-box">
+              <canvas id="payoff-chart" height="240"></canvas>
+            </div>
+            <div class="result-note">Simulation: balance accrues monthly interest (APR/12), payment is applied monthly. Paying only the minimum can take decades — the chart shows the difference.</div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="calc-sidebar">
+        <div class="side-widget">
+          <h4>How it works</h4>
+          <p class="small" style="color:var(--text-muted);">Month-by-month simulation:</p>
+          <div class="formula" style="font-size:13px; margin:8px 0;">interest = balance × APR/12<br>balance = balance + interest − payment</div>
+        </div>
+        <div class="side-widget">
+          <h4>Strategies</h4>
+          <ul>
+            <li><strong>Snowball:</strong> pay off smallest balance first — wins psychologically.</li>
+            <li><strong>Avalanche:</strong> pay off highest APR first — saves the most money.</li>
+          </ul>
+        </div>
+        <div class="side-widget">
+          <h4>Related tools</h4>
+          <ul>
+            <li><a href="compound-interest-calculator.html">Compound Interest Calculator</a></li>
+            <li><a href="retirement-savings-calculator.html">Retirement Savings</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <section class="prose mt-24">
+      <h2>Related guides</h2>
+      <ul>
+        <li><a href="../articles/credit-card-snowball-vs-avalanche.html">Debt Snowball vs Avalanche</a></li>
+        <li><a href="../articles/credit-card-minimum-payment-trap.html">The Minimum Payment Trap</a></li>
+      </ul>
+    </section>
+    <section class="prose mt-24">
+      <h2>How long does it really take to pay off a credit card?</h2>
+      <p>Credit card interest compounds monthly, which means a high APR debt grows even as you pay. With only minimum payments, a $6,000 balance at 22% APR can take <strong>20+ years</strong> and cost more than the original balance in interest.</p>
+
+      <h2>The math</h2>
+      <p class="formula">Monthly interest = Balance × (APR ÷ 12)</p>
+      <p class="formula">New balance = Balance + interest − total payment</p>
+      <p>Each month: interest is charged on the previous balance, your payment is applied, and the cycle repeats until the balance reaches zero. This calculator runs that simulation month by month — no closed-form approximation.</p>
+
+      <h3>Worked example</h3>
+      <p>$6,000 balance, 22% APR, $120 minimum + $100 extra = $220/month (month-by-month simulation):</p>
+      <ul>
+        <li>Month 1 interest = $6,000 × (0.22/12) = <strong>$110</strong>; balance = $6,000 + $110 − $220 = $5,890</li>
+        <li>Month 2 interest ≈ $107.98; balance ≈ $5,778</li>
+        <li>With only $120/month: payoff takes <strong>137 months (11.4 years)</strong>, ~$10,414 in interest</li>
+        <li>With $220/month: payoff takes <strong>39 months (3.3 years)</strong>, ~$2,394 in interest — saving ~$8,020</li>
+      </ul>
+
+      <h2>Frequently asked questions</h2>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Should I use snowball or avalanche?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">Avalanche (highest APR first) mathematically saves the most money. Snowball (smallest balance first) builds momentum and works better if you need quick wins to stay motivated. Both beat minimum payments.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">What if I miss a payment?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">Late payments trigger penalty APRs (often 29%+) and hurt your credit score. If you&rsquo;re struggling, contact your issuer — many offer hardship programs.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Is a balance transfer worth it?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">A 0% balance transfer can save significant interest, but watch transfer fees (3–5%) and the promo end date. Make sure you can pay off the balance before the promo rate expires.</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>CalcNest</h4>
+          <p>Free calculators with transparent formulas and plain-English answers.</p>
+        </div>
+        <div>
+          <h4>Calculators</h4>
+          <ul>
+            <li><a href="rent-affordability-calculator.html">Rent Affordability</a></li>
+            <li><a href="retirement-savings-calculator.html">Retirement Savings</a></li>
+            <li><a href="credit-card-payoff-calculator.html">Credit Card Payoff</a></li>
+            <li><a href="compound-interest-calculator.html">Compound Interest</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+            <li><a href="../privacy.html">Privacy Policy</a></li>
+            <li><a href="../terms.html">Terms of Use</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© <span id="year">2026</span> CalcNest. All rights reserved.</span>
+        <span>Not financial advice. Calculators are for estimation only.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie notice">
+    <span>We use cookies to understand how visitors use our site. See our <a href="../privacy.html">Privacy Policy</a>.</span>
+    <button class="btn btn-sm" id="cookie-accept">Accept</button>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/analytics.js"></script>
+  <script>
+  (function () {
+    'use strict';
+    var form = document.getElementById('cc-form');
+    var resultCard = document.getElementById('result-card');
+
+    function money(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+
+    function sanitize(v, def) {
+      var n = parseFloat(v);
+      if (isNaN(n) || !isFinite(n)) return (typeof def === 'undefined' ? 0 : def);
+      return n;
+    }
+
+    function finiteMoney(v) {
+      if (isNaN(v) || !isFinite(v)) return '—';
+      return money(v);
+    }
+
+    function simulate(balance, apr, payment) {
+      var months = 0, totalInterest = 0, cur = balance;
+      var monthlyRate = apr / 100 / 12;
+      var guard = 1200;
+      var neverPaidOff = false;
+      while (cur > 0 && months < guard) {
+        var interest = cur * monthlyRate;
+        // 每月还款不足以覆盖当月利息 → 余额永不下降，永远还不清
+        if (payment <= interest) {
+          neverPaidOff = true;
+          break;
+        }
+        totalInterest += interest;
+        cur = cur + interest - payment;
+        months++;
+        if (cur < 0) cur = 0;
+      }
+      // 循环跑满 guard 仍没还清 → 视为永远还不清（避免展示虚假的天文数字）
+      if (months >= guard && cur > 0) neverPaidOff = true;
+      return {
+        months: months,
+        interest: totalInterest,
+        total: balance + totalInterest,
+        neverPaidOff: neverPaidOff
+      };
+    }
+
+    function drawChart(series, labels) {
+      var canvas = document.getElementById('payoff-chart');
+      if (!canvas) return;
+      var setup = CalcNest.setupCanvas(canvas, 560);
+      var ctx = setup.ctx, cw = setup.w, ch = setup.h;
+      var padL = 64, padR = 12, padT = 16, padB = 28;
+      var max = Math.max.apply(null, series.map(function (s) { return s.curve.length ? Math.max.apply(null, s.curve) : 1; }));
+      max = max * 1.05;
+      ctx.clearRect(0, 0, cw, ch);
+      ctx.font = '11px sans-serif';
+      ctx.fillStyle = '#94a3b8';
+      for (var g = 0; g <= 4; g++) {
+        var gy = padT + (ch - padT - padB) * (1 - g / 4);
+        ctx.strokeStyle = '#e2e8f0';
+        ctx.beginPath(); ctx.moveTo(padL, gy); ctx.lineTo(cw - padR, gy); ctx.stroke();
+        ctx.fillText(money(max * g / 4), 2, gy + 4);
+      }
+      var colors = ['#dc2626', '#2563eb'];
+      series.forEach(function (s, si) {
+        var n = Math.max(s.curve.length, 2);
+        var stepX = (cw - padL - padR) / (n - 1);
+        ctx.beginPath();
+        for (var k = 0; k < s.curve.length; k++) {
+          var x = padL + k * stepX;
+          var y = padT + (ch - padT - padB) * (1 - s.curve[k] / max);
+          if (k === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = colors[si % colors.length];
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.fillStyle = colors[si % colors.length];
+        ctx.fillRect(cw - padR - 90, padT + 8 + si * 18, 10, 10);
+        ctx.fillStyle = '#334155';
+        ctx.font = '11px sans-serif';
+        ctx.fillText(s.label, cw - padR - 74, padT + 17 + si * 18);
+      });
+      ctx.fillStyle = '#64748b';
+      ctx.fillText(labels[0], padL, ch - 8);
+      ctx.fillText(labels[1], padL + (cw - padL - padR) / 2 - 20, ch - 8);
+      ctx.fillText(labels[2], cw - padR - 40, ch - 8);
+    }
+
+    function calc(e) {
+      if (e) e.preventDefault();
+      var balance = sanitize(document.getElementById('cc-balance').value, 0);
+      var apr = sanitize(document.getElementById('cc-apr').value, 0);
+      var minPay = sanitize(document.getElementById('cc-min-payment').value, 0);
+      var extra = sanitize(document.getElementById('cc-extra').value, 0);
+
+      // 边界防御：APR 必须 0~100（现实信用卡 APR 范围），余额/还款必须为正，额外还款非负
+      if (balance <= 0 || minPay <= 0 || apr < 0 || apr > 100 || extra < 0) { resultCard.classList.remove('show'); return; }
+
+      var minOnly = simulate(balance, apr, minPay);
+      var withExtra = simulate(balance, apr, minPay + extra);
+      var saved = (minOnly.neverPaidOff || withExtra.neverPaidOff) ? null : Math.max(0, minOnly.interest - withExtra.interest);
+
+      var elMonths = document.getElementById('result-months');
+      var elSaved = document.getElementById('r-saved');
+      if (withExtra.neverPaidOff) {
+        elMonths.textContent = 'Never paid off';
+      } else {
+        elMonths.textContent = withExtra.months + ' months';
+      }
+      document.getElementById('r-total-paid').textContent = withExtra.neverPaidOff ? '—' : money(withExtra.total);
+      document.getElementById('r-total-interest').textContent = withExtra.neverPaidOff ? '—' : money(withExtra.interest);
+      if (saved === null) {
+        elSaved.textContent = 'N/A';
+      } else {
+        elSaved.textContent = money(saved);
+      }
+
+      var today = new Date();
+      var done = new Date(today);
+      done.setMonth(done.getMonth() + withExtra.months);
+      var options = { year: 'numeric', month: 'short' };
+      document.getElementById('r-date').textContent = withExtra.neverPaidOff ? '—' : done.toLocaleDateString('en-US', options);
+
+      var insight = document.getElementById('insight-text');
+      var msg = '';
+      if (withExtra.neverPaidOff) {
+        msg = 'Warning: your total monthly payment (' + money(minPay + extra) + ') is not enough to cover the monthly interest. The balance keeps growing, so this debt would never be paid off. Increase your monthly payment above the interest charge to make progress.';
+      } else if (minOnly.neverPaidOff && extra > 0) {
+        msg = 'Important: with the minimum payment alone (' + money(minPay) + '/month) your balance would never be paid off — the payment does not even cover the monthly interest. Your extra ' + money(extra) + '/month turns that around: you now finish in ' + withExtra.months + ' months and pay ' + money(withExtra.interest) + ' in interest. Consider automating this extra payment.';
+      } else if (minOnly.neverPaidOff) {
+        msg = 'Warning: at ' + money(minPay) + '/month, your payment is below the monthly interest charge, so the balance grows forever. Raise your payment above the interest to start paying the balance down.';
+      } else if (extra > 0) {
+        msg = 'With the extra ' + money(extra) + '/month, you finish in ' + withExtra.months + ' months instead of ' + minOnly.months + ' — that is ' + Math.max(0, minOnly.months - withExtra.months) + ' months sooner and saves ' + money(saved) + ' in interest. Consider automating the extra payment so it happens every month.';
+      } else {
+        msg = 'At your current payment, you will be debt-free in about ' + minOnly.months + ' months (' + Math.round(minOnly.months / 12) + ' years) and pay ' + money(minOnly.interest) + ' in interest. Even an extra ' + money(Math.max(10, Math.round(minPay * 0.25))) + '/month would meaningfully cut both.';
+      }
+      insight.textContent = msg;
+
+      // chart series — 永不还清的曲线会指数爆炸，跳过绘制并在图例标注
+      var mkCurve = function (payment, neverFlag) {
+        var curve = [], cur = balance, mRate = apr / 100 / 12, g2 = 0;
+        var growsForever = neverFlag;
+        while (cur > 0 && g2 < 1200) {
+          curve.push(cur);
+          var interest = cur * mRate;
+          if (payment <= interest) { growsForever = true; break; }
+          cur = cur + interest - payment;
+          g2++;
+        }
+        return { curve: curve, growsForever: growsForever };
+      };
+      var minCurve = mkCurve(minPay, minOnly.neverPaidOff);
+      var extraCurve = mkCurve(minPay + extra, withExtra.neverPaidOff);
+      var chartSeries = [];
+      if (!minCurve.growsForever) chartSeries.push({ label: 'Minimum only', curve: minCurve.curve });
+      if (!extraCurve.growsForever) chartSeries.push({ label: 'With extra', curve: extraCurve.curve });
+      // 永不还清时也要有一条可见标注，避免空白图表
+      if (chartSeries.length === 0) {
+        chartSeries.push({ label: 'Balance (never paid off)', curve: minCurve.curve.slice(0, 60) });
+      }
+      // 结果优先展示：图表失败不应中断结果（健壮性）
+      resultCard.classList.add('show');
+      if (window.CalcNestAnalytics) { window.CalcNestAnalytics.calcSubmit('credit-card-payoff'); window.CalcNestAnalytics.resultShown('credit-card-payoff'); }
+      try { drawChart(chartSeries, ['Start', 'Midpoint', 'Done']); } catch (err) { /* chart optional */ }
+    }
+
+    form.addEventListener('submit', calc);
+  })();
+  </script>
+</body>
+</html>

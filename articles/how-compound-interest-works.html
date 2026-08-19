@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How Compound Interest Works: The Math Behind the "8th Wonder" | CalcNest</title>
+  <meta name="description" content="How compound interest works, explained with the future value formula, worked examples, the rule of 72, the cost of waiting, and why time beats rate.">
+  <link rel="canonical" href="https://calcnest.com/articles/how-compound-interest-works.html">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%232563eb'/><text x='16' y='22' font-size='18' font-family='Arial' font-weight='bold' fill='white' text-anchor='middle'>C</text></svg>">
+  <link rel="stylesheet" href="../css/style.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How Compound Interest Works: The Math Behind the 8th Wonder",
+    "description": "Compound interest explained with the future value formula, worked examples, the rule of 72, the cost of waiting, and why time beats rate.",
+    "author": { "@type": "Organization", "name": "CalcNest" },
+    "publisher": { "@type": "Organization", "name": "CalcNest" },
+    "datePublished": "2026-08-18",
+    "dateModified": "2026-08-19",
+    "mainEntityOfPage": "https://calcnest.com/articles/how-compound-interest-works.html"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How often should interest compound?",
+        "acceptedAnswer": { "@type": "Answer", "text": "More frequent compounding = slightly more growth, all else equal. Most savings accounts compound monthly; some daily. The difference is small but real over long horizons." }
+      },
+      {
+        "@type": "Question",
+        "name": "Is 7% realistic?",
+        "acceptedAnswer": { "@type": "Answer", "text": "Before inflation, the US stock market has historically returned about 7–10% annually. After ~3% inflation, that's roughly 4–7% in real purchasing power. Use 5–7% as your planning range." }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this account for taxes?",
+        "acceptedAnswer": { "@type": "Answer", "text": "No — this is a pre-tax projection. Tax-advantaged accounts (401k, IRA) let compounding run untaxed; taxable accounts are subject to capital gains rules in your jurisdiction." }
+      }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="logo" href="../index.html" aria-label="CalcNest home">
+        <span class="logo-mark">C</span><span>CalcNest</span>
+      </a>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">☰</button>
+      <nav class="site-nav" id="site-nav" aria-label="Main navigation">
+        <ul>
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../tools/rent-affordability-calculator.html">Rent</a></li>
+          <li><a href="../tools/retirement-savings-calculator.html">Retirement</a></li>
+          <li><a href="../tools/credit-card-payoff-calculator.html">Debt</a></li>
+          <li><a href="../tools/compound-interest-calculator.html">Interest</a></li>
+          <li><a href="../about.html">About</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container section">
+    <p class="breadcrumb"><a href="../index.html">Home</a> / <a href="../tools/compound-interest-calculator.html">Compound Interest Calculator</a> / How It Works</p>
+    <article class="prose">
+      <h1>How Compound Interest Works: The Math Behind the "Eighth Wonder"</h1>
+      <p class="muted small">Last updated: August 19, 2026 &middot; 9 min read</p>
+
+      <p>Compound interest is often called the eighth wonder of the world. Whatever its nickname, it&rsquo;s the single most powerful force in personal finance &mdash; and also, running the other direction, the reason credit card debt spirals out of control. Here&rsquo;s exactly how it works, in plain math, with worked examples and the one mistake almost everyone makes.</p>
+
+      <h2>The core idea: interest on interest</h2>
+      <p>Simple interest pays you the same amount each year: $1,000 at 10% simple earns $100 every year, forever. <strong>Compound interest</strong> pays you 10% of <em>whatever you have now</em>. Year two&rsquo;s interest is calculated on $1,100, not $1,000. Year three on $1,210. The base keeps growing, so the interest keeps growing &mdash; that&rsquo;s the whole secret.</p>
+      <table>
+        <tr><th>Year</th><th>Simple (10%)</th><th>Compound (10%)</th></tr>
+        <tr><td>0</td><td>$1,000</td><td>$1,000</td></tr>
+        <tr><td>10</td><td>$2,000</td><td>$2,594</td></tr>
+        <tr><td>20</td><td>$3,000</td><td>$6,727</td></tr>
+        <tr><td>30</td><td>$4,000</td><td>$17,449</td></tr>
+      </table>
+      <p>Same rate, same starting money &mdash; but compounding turns the curve exponential. After 30 years, compound earns over <strong>4&times; more</strong> than simple interest. The gap only widens the longer you go.</p>
+
+      <h2>The formula</h2>
+      <div class="formula">FV = P(1 + r/n)<sup>nt</sup></div>
+      <ul>
+        <li><strong>P</strong> = principal, <strong>r</strong> = annual rate (as decimal), <strong>n</strong> = compounding periods per year, <strong>t</strong> = years</li>
+      </ul>
+      <p>With monthly contributions it becomes:</p>
+      <div class="formula">FV = P(1+i)<sup>m</sup> + PMT &times; [( (1+i)<sup>m</sup> &minus; 1 ) / i]</div>
+      <p>where i = monthly rate and m = total months. This is the formula behind our <a href="../tools/compound-interest-calculator.html">compound interest calculator</a>.</p>
+
+      <h2>The rule of 72</h2>
+      <p>A quick mental shortcut: divide 72 by your annual rate to estimate years to double.</p>
+      <div class="formula">Years to double &asymp; 72 &divide; rate</div>
+      <ul>
+        <li>4% &rarr; 18 years</li>
+        <li>7% &rarr; ~10.3 years</li>
+        <li>10% &rarr; ~7.2 years</li>
+        <li>12% &rarr; ~6 years</li>
+      </ul>
+      <p>It&rsquo;s a rough estimate, not exact math, but it&rsquo;s astonishingly accurate for rates between 4% and 15% &mdash; and it makes the power of rate changes instantly visible.</p>
+
+      <h2>Why time beats rate</h2>
+      <p>Doubling your return rate doubles your growth curve &mdash; but <strong>adding time multiplies it</strong>. An extra 5 years near the end of an investment is worth more than a 2% higher return over its whole life. That&rsquo;s why the #1 investing advice is always the same: start as early as you can.</p>
+      <p>Here&rsquo;s the counterintuitive part most people miss: <strong>the last decade of your investment is worth more than the first three decades combined.</strong> A $10,000 investment at 7% is worth ~$20,000 after 10 years, ~$76,000 after 30 years, and ~$150,000 after 40 years. The final ten years alone add $74,000 &mdash; more than the first 30 years produced. Waiting five years to start costs you that final-decade compounding.</p>
+
+      <h2>The cost of waiting (worked example)</h2>
+      <p>Meet Dana. She&rsquo;s 25 and plans to invest <strong>$300/month at 7%</strong> until she&rsquo;s 65 (40 years):</p>
+      <ul>
+        <li>Total contributed: $300 &times; 480 months = <strong>$144,000</strong></li>
+        <li>Future value &asymp; <strong>$859,000</strong></li>
+      </ul>
+      <p>Now meet Eric. He waits just <strong>five years</strong>, starting at 30 with the same $300/month at 7% until 65 (35 years):</p>
+      <ul>
+        <li>Total contributed: $300 &times; 420 months = <strong>$126,000</strong></li>
+        <li>Future value &asymp; <strong>$568,000</strong></li>
+      </ul>
+      <p>Eric contributed only $18,000 less than Dana, but ends up with <strong>$291,000 less</strong> &mdash; over 34% less. Five years of delay costs him a third of his retirement. Run your own numbers in our <a href="../tools/compound-interest-calculator.html">calculator</a> and watch the waiting cost appear.</p>
+
+      <h2>Compound interest against you</h2>
+      <p>The same math powers credit card debt. A $6,000 balance at 22% APR compounds monthly &mdash; which is why paying only the minimum can take <strong>137 months (11+ years)</strong> and cost over $10,000 in interest. The force that builds wealth, running backwards, is the force that destroys it. Understanding compounding cuts both ways: <a href="../tools/credit-card-payoff-calculator.html">see how extra payments break the spiral</a>.</p>
+
+      <h2>Common compounding mistakes</h2>
+      <ul>
+        <li><strong>1. Ignoring fees.</strong> A 1% annual fee isn&rsquo;t &ldquo;just 1%.&rdquo; Over 40 years it eats ~28% of your final balance.</li>
+        <li><strong>2. Withdrawing &ldquo;just once.&rdquo;</strong> Early withdrawals break the compounding curve and trigger taxes/penalties.</li>
+        <li><strong>3. Using simple-interest thinking.</strong> &ldquo;7% is nothing&rdquo; is the exact thought that costs people hundreds of thousands.</li>
+        <li><strong>4. Waiting for the &ldquo;right moment.&rdquo;</strong> Timing the market is impossible; time <em>in</em> the market is the whole game.</li>
+      </ul>
+
+      <h2>Your action checklist</h2>
+      <ol>
+        <li>Run your current plan in our <a href="../tools/compound-interest-calculator.html">compound interest calculator</a>.</li>
+        <li>Test what starting one year earlier (or later) does to your final number &mdash; the waiting cost is motivating.</li>
+        <li>Check every account for fees; move to low-cost index funds if over 0.5%.</li>
+        <li>Set up automatic monthly contributions so compounding never pauses.</li>
+        <li>Review annually and increase contributions with every raise.</li>
+      </ol>
+
+      <h2>Frequently asked questions</h2>
+      <div class="faq-item">
+        <button class="faq-q" type="button">How often should interest compound?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">More frequent compounding = slightly more growth, all else equal. Most savings accounts compound monthly; some compound daily. The difference is small but real over long horizons.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Is 7% realistic?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">Before inflation, the US stock market has historically returned about 7&ndash;10% annually. After ~3% inflation, that&rsquo;s roughly 4&ndash;7% in real purchasing power. Use 5&ndash;7% as your planning range.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Does this account for taxes?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">No &mdash; this is a pre-tax projection. Tax-advantaged accounts (401k, IRA) let compounding run untaxed; taxable accounts are subject to capital gains rules in your jurisdiction.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" type="button">Is the rule of 72 accurate?<span class="faq-arrow">▾</span></button>
+        <div class="faq-a">It&rsquo;s an approximation, accurate to within a few months for rates between 4% and 15%. For very high or very low rates, use the exact formula.</div>
+      </div>
+
+      <h2>Bottom line</h2>
+      <p>Compounding rewards the patient and punishes the delayed. The formula is simple, the consequences are exponential &mdash; and the best day to start was yesterday, the second-best day is today. <a href="../tools/compound-interest-calculator.html">Run the numbers</a> and let the waiting cost make the decision for you.</p>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <h4>CalcNest</h4>
+          <p>Free calculators with transparent formulas and plain-English answers.</p>
+        </div>
+        <div>
+          <h4>Calculators</h4>
+          <ul>
+            <li><a href="../tools/rent-affordability-calculator.html">Rent Affordability</a></li>
+            <li><a href="../tools/retirement-savings-calculator.html">Retirement Savings</a></li>
+            <li><a href="../tools/credit-card-payoff-calculator.html">Credit Card Payoff</a></li>
+            <li><a href="../tools/compound-interest-calculator.html">Compound Interest</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Company</h4>
+          <ul>
+            <li><a href="../about.html">About</a></li>
+            <li><a href="../contact.html">Contact</a></li>
+            <li><a href="../privacy.html">Privacy Policy</a></li>
+            <li><a href="../terms.html">Terms of Use</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; <span id="year">2026</span> CalcNest. All rights reserved.</span>
+        <span>Not financial advice. Calculators are for estimation only.</span>
+      </div>
+    </div>
+  </footer>
+
+  <div class="cookie-banner" id="cookie-banner" role="dialog" aria-label="Cookie notice">
+    <span>We use cookies to understand how visitors use our site. See our <a href="../privacy.html">Privacy Policy</a>.</span>
+    <button class="btn btn-sm" id="cookie-accept">Accept</button>
+  </div>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
