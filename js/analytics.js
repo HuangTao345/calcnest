@@ -6,6 +6,17 @@
    - Falls back to console.debug when endpoint not configured (local dev).
    To activate: set window.CALCNEST_ANALYTICS_ENDPOINT = "https://your-site/analytics"
    (e.g. Cloudflare Pages Function, Plausible, or GoatCounter-compatible beacon). */
+
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?9829d5960118ffa7c8085860de39866b";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+
+
+
 (function () {
   'use strict';
 
