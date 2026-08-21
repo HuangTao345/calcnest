@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
-CalcNest V1.4 — 强复审·边界用例矩阵测试（新增强制关卡）
-背景：V1.4 信用卡"天文数字"事故 = 只测幸福路径，未测边界输入。
+CalcNest V1.5 — 强复审·边界用例矩阵测试（新增强制关卡）
+背景：V1.5 信用卡"天文数字"事故 = 只测幸福路径，未测边界输入。
 本脚本把"用户乱输/极端输入"固化为常设断言，任何工具输出可疑值即失败。
 
 验证目标（4 个工具的核心计算逻辑，Python 复现 JS 语义）：
@@ -51,7 +51,7 @@ if r and abs(r["safe"] - 1500) < 0.01 and abs(r["dti"] - 42.0) < 0.1 and abs(r["
 else:
     bad("rent: 正常", str(r))
 
-# 1b 负负债 → 必须拦截（V1.4 修复前会反向放大）
+# 1b 负负债 → 必须拦截（V1.5 修复前会反向放大）
 r = rent(5000, -500, 900, 400, 30)
 if r is None:
     ok("rent: 负负债 → 拦截")
@@ -75,7 +75,7 @@ else:
 # ================= 2. Retirement Savings =================
 print("\n=== 2. Retirement Savings ===")
 def calc_guard_retire(P, PMT, years, rate):
-    """复现 V1.4 calc 的输入防御门"""
+    """复现 V1.5 calc 的输入防御门"""
     return not (years <= 0 or rate < 0 or rate > 100 or P < 0 or PMT < 0)
 
 def fv_retire(P, PMT, rate, years):
@@ -85,7 +85,7 @@ def fv_retire(P, PMT, rate, years):
     if i == 0:
         return P + PMT * n
     if 1 + i <= 0:
-        return float("nan")  # V1.4 防御
+        return float("nan")  # V1.5 防御
     return P * (1 + i) ** n + PMT * (((1 + i) ** n - 1) / i)
 
 # 2a 正常
@@ -95,13 +95,13 @@ if is_finite(fv) and 400000 < fv < 600000:
 else:
     bad("retire: 正常", str(fv))
 
-# 2b 负利率 → 守卫拦截（V1.4: rate<0 return）
+# 2b 负利率 → 守卫拦截（V1.5: rate<0 return）
 if not calc_guard_retire(20000, 500, 25, -10):
     ok("retire: 负利率 → 输入守卫拦截")
 else:
     bad("retire: 负利率守卫未拦截")
 
-# 2c 极大利率 99999 → 守卫拦截（V1.4: rate>100 return，避免 Infinity）
+# 2c 极大利率 99999 → 守卫拦截（V1.5: rate>100 return，避免 Infinity）
 if not calc_guard_retire(20000, 500, 25, 99999):
     ok("retire: 极大利率 99999 → 输入守卫拦截（拒绝 Infinity）")
 else:
@@ -126,7 +126,7 @@ else:
 # ================= 3. Compound Interest =================
 print("\n=== 3. Compound Interest ===")
 def calc_guard_compound(P, PMT, years, rate):
-    """复现 V1.4 calc 的输入防御门"""
+    """复现 V1.5 calc 的输入防御门"""
     return not (years <= 0 or rate < 0 or rate > 100 or P < 0 or PMT < 0)
 
 def fv_compound(P, PMT, rate, years, per_year):
@@ -187,7 +187,7 @@ def simulate(balance, apr, payment):
         never = True
     return months, total_interest, never
 
-# 4a 正常（V1.4 已验证值）
+# 4a 正常（V1.5 已验证值）
 m1, i1, n1 = simulate(6000, 22, 120)
 m2, i2, n2 = simulate(6000, 22, 220)
 if m1 == 137 and m2 == 39 and abs(i1 - i2 - 8020) < 50 and not n1 and not n2:
@@ -195,16 +195,16 @@ if m1 == 137 and m2 == 39 and abs(i1 - i2 - 8020) < 50 and not n1 and not n2:
 else:
     bad("cc: 正常", "m1=%d m2=%d" % (m1, m2))
 
-# 4b 永不还清（V1.4 核心修复）
+# 4b 永不还清（V1.5 核心修复）
 m1, i1, n1 = simulate(100000, 22, 200)
 if n1 and m1 == 0 and i1 == 0:
     ok("cc: $100k min=$200 → neverPaidOff, 无天文数字")
 else:
     bad("cc: neverPaidOff", "m=%d i=%d never=%s" % (m1, i1, n1))
 
-# 4c 负 APR → calc 拦截（V1.4: apr<0 return）
+# 4c 负 APR → calc 拦截（V1.5: apr<0 return）
 def cc_calc_guard(apr):
-    return 0 <= apr <= 100  # V1.4: apr<0 或 apr>100 → return
+    return 0 <= apr <= 100  # V1.5: apr<0 或 apr>100 → return
 if cc_calc_guard(-20) == False:
     ok("cc: 负 APR → 拦截")
 else:

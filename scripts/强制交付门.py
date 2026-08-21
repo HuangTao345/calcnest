@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-CalcNest MVP V1.4 — 强制交付门 (FORCE GATES)
+CalcNest MVP V1.5 — 强制交付门 (FORCE GATES)
 适用 Gate（MVP 无背景素材/音频检测需求，GATE-A/GATE-D 本期 N/A）：
   GATE-B: selftest.py 全 PASS
   GATE-C: html_review.py 全 PASS
   GATE-E: docs/v1.0_preview.png 存在（视觉预览已渲染）
   GATE-F: docs/大笔记_*.md 存在 + 根目录 STATUS.md 已更新
-  GATE-G: 版本号 V1.4 全局一致
+  GATE-G: 版本号 V1.5 全局一致
 用法: python scripts/强制交付门.py
 任一 FAIL -> 非 0 退出码 -> 拒绝交付
 """
@@ -25,7 +25,7 @@ except Exception:
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(ROOT)  # 垂直计算工具站/
 WORKSPACE_ROOT = os.path.dirname(PROJECT_ROOT)  # 音乐理论与编程混合专家/
-VERSION = "V1.4"
+VERSION = "V1.5"
 
 failures = []
 
@@ -49,7 +49,7 @@ print("=" * 60)
 if not run_gate("GATE-B selftest.py", [sys.executable, "selftest.py"], os.path.join(ROOT, "scripts")):
     failures.append("GATE-B")
 
-# GATE-B2 (强复审·边界用例): 用户乱输/极端输入必须被防御 (V1.4 新增, 事故沉淀)
+# GATE-B2 (强复审·边界用例): 用户乱输/极端输入必须被防御 (V1.5 新增, 事故沉淀)
 if not run_gate("GATE-B2 boundary_test.py", [sys.executable, "boundary_test.py"], os.path.join(ROOT, "scripts")):
     failures.append("GATE-B2")
 

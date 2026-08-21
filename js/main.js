@@ -1,4 +1,4 @@
-/* CalcNest — shared site JS (V1.4)
+/* CalcNest — shared site JS (V1.5)
    Handles: mobile nav, cookie banner (GDPR), FAQ accordions,
    chart canvas HiDPI scaling, current-year in footer.
    No external dependencies. */

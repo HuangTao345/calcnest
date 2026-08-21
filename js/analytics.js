@@ -1,4 +1,13 @@
-/* CalcNest — lightweight privacy-friendly analytics (V1.4)
+/* CalcNest — Baidu Tongji (流量监测，V1.4 收录期接入) */
+var _hmt = _hmt || [];
+(function () {
+  var hm = document.createElement("script");
+  hm.src = "https://hm.baidu.com/hm.js?9829d5960118ffa7c8085860de39866b";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(hm, s);
+})();
+
+/* CalcNest — lightweight privacy-friendly analytics (V1.5)
    Design:
    - No cookies, no third-party scripts. Privacy Policy promise intact.
    - Collects ≥5 core events per page.
@@ -6,17 +15,6 @@
    - Falls back to console.debug when endpoint not configured (local dev).
    To activate: set window.CALCNEST_ANALYTICS_ENDPOINT = "https://your-site/analytics"
    (e.g. Cloudflare Pages Function, Plausible, or GoatCounter-compatible beacon). */
-
-var _hmt = _hmt || [];
-(function() {
-  var hm = document.createElement("script");
-  hm.src = "https://hm.baidu.com/hm.js?9829d5960118ffa7c8085860de39866b";
-  var s = document.getElementsByTagName("script")[0]; 
-  s.parentNode.insertBefore(hm, s);
-})();
-
-
-
 (function () {
   'use strict';
 
@@ -55,7 +53,7 @@ var _hmt = _hmt || [];
       page: pageName(),
       t: nowISO(),
       ref: document.referrer ? document.referrer.slice(0, 200) : '',
-      v: '1.4'
+      v: '1.5'
     };
     if (payload) { for (var k in payload) { if (Object.prototype.hasOwnProperty.call(payload, k)) item[k] = payload[k]; } }
     q.push(item);

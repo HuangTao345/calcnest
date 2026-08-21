@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-CalcNest MVP V1.4 — HTML 强制复审 (GATE-C)
+CalcNest MVP V1.5 — HTML 强制复审 (GATE-C)
 检查：DOM 完整性 / 事件绑定 / 键名一致性 / 表单联动 / 运行时防御
 用法: python scripts/html_review.py
 """
@@ -96,18 +96,18 @@ for t in TOOLS:
     else:
         bad("%s: result-card not toggled" % name)
 
-print("\n=== 3. 数值防御 (V1.4: sanitize + finiteMoney + 守卫) ===")
+print("\n=== 3. 数值防御 (V1.5: sanitize + finiteMoney + 守卫) ===")
 for t in TOOLS:
     h = read(t)
     name = t.split("/")[-1]
     scripts = re.findall(r"<script>(.*?)</script>", h, re.S)
     js_code = "\n".join(scripts)
     if "function sanitize" in js_code:
-        ok("%s: sanitize 防御存在 (V1.4)" % name)
+        ok("%s: sanitize 防御存在 (V1.5)" % name)
     else:
         bad("%s: sanitize 缺失" % name)
     if "finiteMoney" in js_code:
-        ok("%s: finiteMoney 兜底存在 (V1.4)" % name)
+        ok("%s: finiteMoney 兜底存在 (V1.5)" % name)
     else:
         bad("%s: finiteMoney 缺失" % name)
     # 守卫：每个工具按自身的零/负值/上限守卫检查

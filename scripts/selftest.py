@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-CalcNest MVP V1.4 — selftest (GATE-B)
+CalcNest MVP V1.5 — selftest (GATE-B)
 静态验证：文件齐全 / 关键 DOM 结构 / 计算逻辑断言 / SEO 要素 / 链接完整性
 用法: python scripts/selftest.py
 """
@@ -43,6 +43,9 @@ REQUIRED = [
     "articles/credit-card-minimum-payment-trap.html",
     "articles/how-compound-interest-works.html",
     "articles/rule-of-72-explained.html",
+    "articles/security-deposit-calculator-guide.html",
+    "articles/roth-ira-vs-traditional-explained.html",
+    "articles/credit-utilization-ratio-explained.html",
     "sitemap.xml", "robots.txt", "404.html", "js/analytics.js",
 ]
 print("=== 1. 文件齐全 ===")
@@ -155,22 +158,22 @@ if "cc-balance" in cc_html and "cc-apr" in cc_html and "cc-extra" in cc_html:
     ok("creditcard: key inputs present")
 else:
     bad("creditcard: key inputs")
-# V1.4 回归：永不还清检测（防"天文数字"复发）
+# V1.5 回归：永不还清检测（防"天文数字"复发）
 if "neverPaidOff" in cc_html and "payment <= interest" in cc_html:
-    ok("creditcard V1.4: neverPaidOff guard present")
+    ok("creditcard V1.5: neverPaidOff guard present")
 else:
-    bad("creditcard V1.4: neverPaidOff guard MISSING")
+    bad("creditcard V1.5: neverPaidOff guard MISSING")
 if "Interest saved vs minimum-only" in cc_html:
     ok("creditcard: saved label present")
 else:
     bad("creditcard: saved label missing")
-# V1.4 回归：APR 上限防御（0~100）
+# V1.5 回归：APR 上限防御（0~100）
 if "apr > 100" in cc_html:
-    ok("creditcard V1.4: APR 0~100 guard present")
+    ok("creditcard V1.5: APR 0~100 guard present")
 else:
-    bad("creditcard V1.4: APR guard MISSING")
+    bad("creditcard V1.5: APR guard MISSING")
 
-# V1.4 强复审回归：4 工具统一 sanitize + finiteMoney + 负值/上限守卫
+# V1.5 强复审回归：4 工具统一 sanitize + finiteMoney + 负值/上限守卫
 ci_html = read("tools/compound-interest-calculator.html")
 for t_html, tname in [
     (rent_html, "rent"),
@@ -179,19 +182,19 @@ for t_html, tname in [
     (ci_html, "compound"),
 ]:
     if "function sanitize" in t_html and "finiteMoney" in t_html:
-        ok("%s V1.4: sanitize+finiteMoney present" % tname)
+        ok("%s V1.5: sanitize+finiteMoney present" % tname)
     else:
-        bad("%s V1.4: sanitize/finiteMoney MISSING" % tname)
+        bad("%s V1.5: sanitize/finiteMoney MISSING" % tname)
     if tname in ("retirement", "compound"):
         if "rate > 100" in t_html and "rate < 0" in t_html:
-            ok("%s V1.4: rate 0~100 guard present" % tname)
+            ok("%s V1.5: rate 0~100 guard present" % tname)
         else:
-            bad("%s V1.4: rate guard MISSING" % tname)
+            bad("%s V1.5: rate guard MISSING" % tname)
     elif tname == "rent":
         if "debts < 0" in t_html:
-            ok("rent V1.4: negative-value guard present")
+            ok("rent V1.5: negative-value guard present")
         else:
-            bad("rent V1.4: negative guard MISSING")
+            bad("rent V1.5: negative guard MISSING")
 
 # Compound interest: FV with contributions
 if "Math.pow(1 + i, n)" in ci_html and "P + PMT * n" in ci_html:
@@ -234,11 +237,11 @@ print("\n=== 5. sitemap 完整性 ===")
 try:
     sm = read("sitemap.xml")
     urls = re.findall(r"<loc>(.*?)</loc>", sm)
-    if len(urls) == 18:
-        ok("sitemap: 18 URLs")
+    if len(urls) == 21:
+        ok("sitemap: 21 URLs")
     else:
-        bad("sitemap: expected 18, got %d" % len(urls))
-    missing = [u for u in urls if not u.startswith("https://calcnest.com/")]
+        bad("sitemap: expected 21, got %d" % len(urls))
+    missing = [u for u in urls if not u.startswith("https://aicalcnest.com/")]
     if not missing:
         ok("sitemap: all URLs use canonical domain")
     else:
@@ -246,7 +249,7 @@ try:
     for f in REQUIRED:
         if f.endswith(".html"):
             slug = f if f == "index.html" else f
-            if slug.replace(".html", ".html") in sm.replace("https://calcnest.com/", ""):
+            if slug.replace(".html", ".html") in sm.replace("https://aicalcnest.com/", ""):
                 pass
     if "robots.txt" in read("robots.txt"):
         pass
@@ -301,10 +304,10 @@ else:
 
 # ---------- 8. 版本号 ----------
 print("\n=== 8. 版本标识 ===")
-if "V1.4" in read("css/style.css") or "V1.4" in read("js/main.js"):
-    ok("version marker V1.4 in assets")
+if "V1.5" in read("css/style.css") or "V1.5" in read("js/main.js"):
+    ok("version marker V1.5 in assets")
 else:
-    bad("version marker V1.4 missing in assets")
+    bad("version marker V1.5 missing in assets")
 
 print("\n===== 结果: %d PASS / %d FAIL =====" % (PASS, FAIL))
 sys.exit(0 if FAIL == 0 else 1)
